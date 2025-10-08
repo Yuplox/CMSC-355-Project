@@ -1,0 +1,690 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calorie Tracking - FitTrack Pro</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            background: linear-gradient(135deg, #065f46 0%, #0f766e 50%, #0e7490 100%);
+            min-height: 100vh;
+            color: white;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 2rem;
+        }
+
+        .back-btn {
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .back-btn:hover {
+            background: rgba(255, 255, 255, 0.2);
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-left: 1rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+
+        .stat-card.green {
+            background: linear-gradient(135deg, rgba(34, 197, 94, 0.3) 0%, rgba(20, 184, 166, 0.3) 100%);
+        }
+
+        .stat-card.cyan {
+            background: linear-gradient(135deg, rgba(6, 182, 212, 0.3) 0%, rgba(59, 130, 246, 0.3) 100%);
+        }
+
+        .stat-label {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.9);
+            margin-bottom: 0.75rem;
+        }
+
+        .stat-value {
+            font-size: 4.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-unit {
+            font-size: 1.125rem;
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .add-btn {
+            width: 100%;
+            background: linear-gradient(to right, #10b981, #14b8a6);
+            border: none;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: bold;
+            padding: 1.25rem;
+            border-radius: 1rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            margin-bottom: 2rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .add-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(to right, #059669, #0d9488);
+        }
+
+        .food-log {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .food-log-header {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+        }
+
+        .food-item {
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 1rem;
+            padding: 1.25rem;
+            margin-bottom: 0.75rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            transition: all 0.3s;
+        }
+
+        .food-item:hover {
+            background: rgba(255, 255, 255, 0.15);
+        }
+
+        .food-item-content {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .food-icon {
+            background: rgba(34, 197, 94, 0.2);
+            padding: 0.75rem;
+            border-radius: 0.75rem;
+        }
+
+        .food-details h3 {
+            font-size: 1.25rem;
+            margin-bottom: 0.25rem;
+        }
+
+        .food-calories {
+            color: #6ee7b7;
+            font-weight: 600;
+            font-size: 1.125rem;
+        }
+
+        .food-actions {
+            display: flex;
+            gap: 0.5rem;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .food-item:hover .food-actions {
+            opacity: 1;
+        }
+
+        .action-btn {
+            padding: 0.75rem;
+            border: none;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .edit-btn {
+            background: #3b82f6;
+            color: white;
+        }
+
+        .edit-btn:hover {
+            background: #2563eb;
+            transform: scale(1.1);
+        }
+
+        .delete-btn {
+            background: #ef4444;
+            color: white;
+        }
+
+        .delete-btn:hover {
+            background: #dc2626;
+            transform: scale(1.1);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+
+        .empty-icon {
+            font-size: 5rem;
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .empty-text {
+            font-size: 1.25rem;
+            color: rgba(255, 255, 255, 0.6);
+            margin-bottom: 0.5rem;
+        }
+
+        .empty-subtext {
+            color: rgba(255, 255, 255, 0.4);
+        }
+
+        .form-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .form-card {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 1.5rem;
+            padding: 2rem;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.3);
+        }
+
+        .form-group {
+            margin-bottom: 2rem;
+        }
+
+        .form-label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+
+        .form-input {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem 1.25rem;
+            color: white;
+            font-size: 1.125rem;
+            transition: all 0.3s;
+        }
+
+        .form-input::placeholder {
+            color: rgba(255, 255, 255, 0.5);
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #10b981;
+            box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.3);
+        }
+
+        .char-count {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 0.5rem;
+        }
+
+        .error-message {
+            color: #fca5a5;
+            font-size: 0.875rem;
+            font-weight: 600;
+        }
+
+        .count-text {
+            color: rgba(255, 255, 255, 0.5);
+            font-size: 0.875rem;
+        }
+
+        .tip-box {
+            background: rgba(16, 185, 129, 0.1);
+            border: 1px solid rgba(52, 211, 153, 0.3);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .tip-text {
+            color: #a7f3d0;
+            font-size: 0.875rem;
+        }
+
+        .form-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .save-btn {
+            flex: 1;
+            background: linear-gradient(to right, #10b981, #14b8a6);
+            border: none;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: bold;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .save-btn:hover {
+            transform: scale(1.02);
+            background: linear-gradient(to right, #059669, #0d9488);
+        }
+
+        .cancel-btn {
+            flex: 1;
+            background: rgba(239, 68, 68, 0.8);
+            border: none;
+            color: white;
+            font-size: 1.125rem;
+            font-weight: bold;
+            padding: 1rem;
+            border-radius: 0.75rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            transition: all 0.3s;
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3);
+        }
+
+        .cancel-btn:hover {
+            background: #dc2626;
+            transform: scale(1.02);
+        }
+
+        .preview-box {
+            margin-top: 1.5rem;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .preview-title {
+            font-size: 1.125rem;
+            font-weight: bold;
+            margin-bottom: 0.75rem;
+        }
+
+        .preview-item {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 0.75rem;
+            padding: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        svg {
+            width: 24px;
+            height: 24px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div id="mainView">
+            <div class="header">
+                <button class="back-btn" onclick="goHome()">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                    </svg>
+                </button>
+                <h1>Calorie Tracking</h1>
+            </div>
+
+            <div class="stats-grid">
+                <div class="stat-card green">
+                    <div class="stat-label">Total Calories Today</div>
+                    <div class="stat-value" id="totalCalories">585</div>
+                    <div class="stat-unit">cal</div>
+                </div>
+                <div class="stat-card cyan">
+                    <div class="stat-label">Food Items Logged</div>
+                    <div class="stat-value" id="itemCount">4</div>
+                    <div class="stat-unit">items</div>
+                </div>
+            </div>
+
+            <button class="add-btn" onclick="showAddForm()">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                </svg>
+                Add New Food Item
+            </button>
+
+            <div class="food-log">
+                <div class="food-log-header">
+                    <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #6ee7b7;">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    Today's Food Log
+                </div>
+                <div id="foodList"></div>
+            </div>
+        </div>
+
+        <div id="formView" class="hidden">
+            <div class="form-container">
+                <div class="header">
+                    <button class="back-btn" onclick="hideForm()">
+                        <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                        </svg>
+                    </button>
+                    <h1 id="formTitle">Add New Food Item</h1>
+                </div>
+
+                <div class="form-card">
+                    <div class="form-group">
+                        <label class="form-label">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #6ee7b7;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                            Item Name
+                        </label>
+                        <input 
+                            type="text" 
+                            id="itemName" 
+                            class="form-input" 
+                            placeholder="e.g., Grilled Chicken Breast"
+                            maxlength="50"
+                        >
+                        <div class="char-count">
+                            <span id="nameError" class="error-message"></span>
+                            <span id="charCount" class="count-text">0/50</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label class="form-label">Calories</label>
+                        <input 
+                            type="number" 
+                            id="itemCalories" 
+                            class="form-input" 
+                            placeholder="e.g., 165"
+                            min="1"
+                        >
+                        <div class="char-count">
+                            <span id="caloriesError" class="error-message"></span>
+                        </div>
+                    </div>
+
+                    <div class="tip-box">
+                        <p class="tip-text">
+                            <strong>Tip:</strong> Be as accurate as possible with your calorie counts. You can find nutritional information on food packaging or use nutrition databases.
+                        </p>
+                    </div>
+
+                    <div class="form-actions">
+                        <button class="save-btn" onclick="saveItem()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4"></path>
+                            </svg>
+                            Save Food Item
+                        </button>
+                        <button class="cancel-btn" onclick="hideForm()">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                            </svg>
+                            Cancel
+                        </button>
+                    </div>
+                </div>
+
+                <div class="preview-box">
+                    <h3 class="preview-title">Preview</h3>
+                    <div class="preview-item">
+                        <div class="food-icon">
+                            <svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #6ee7b7;">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                            </svg>
+                        </div>
+                        <div class="food-details">
+                            <h3 id="previewName">Food Name</h3>
+                            <p class="food-calories"><span id="previewCalories">0</span> calories</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        let foodItems = [
+            { id: 1, name: 'Chicken Breast', calories: 165 },
+            { id: 2, name: 'Brown Rice', calories: 215 },
+            { id: 3, name: 'Greek Yogurt', calories: 100 },
+            { id: 4, name: 'Banana', calories: 105 }
+        ];
+        let editingId = null;
+        let nextId = 5;
+
+        function renderFoodList() {
+            const foodList = document.getElementById('foodList');
+            const totalCalories = document.getElementById('totalCalories');
+            const itemCount = document.getElementById('itemCount');
+
+            if (foodItems.length === 0) {
+                foodList.innerHTML = '<div class="empty-state"><div class="empty-icon">🍎</div><p class="empty-text">No food items logged yet</p><p class="empty-subtext">Click "Add New Food Item" to get started</p></div>';
+            } else {
+                let html = '';
+                for (let i = 0; i < foodItems.length; i++) {
+                    const item = foodItems[i];
+                    html += '<div class="food-item"><div class="food-item-content"><div class="food-icon"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24" style="color: #6ee7b7;"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path></svg></div><div class="food-details"><h3>' + item.name + '</h3><p class="food-calories">' + item.calories + ' calories</p></div></div><div class="food-actions"><button class="action-btn edit-btn" onclick="editItem(' + item.id + ')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z"></path></svg></button><button class="action-btn delete-btn" onclick="deleteItem(' + item.id + ')"><svg fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path></svg></button></div></div>';
+                }
+                foodList.innerHTML = html;
+            }
+
+            let total = 0;
+            for (let i = 0; i < foodItems.length; i++) {
+                total += foodItems[i].calories;
+            }
+            totalCalories.textContent = total;
+            itemCount.textContent = foodItems.length;
+        }
+
+        function showAddForm() {
+            editingId = null;
+            document.getElementById('formTitle').textContent = 'Add New Food Item';
+            document.getElementById('itemName').value = '';
+            document.getElementById('itemCalories').value = '';
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('caloriesError').textContent = '';
+            updateCharCount();
+            updatePreview();
+            document.getElementById('mainView').classList.add('hidden');
+            document.getElementById('formView').classList.remove('hidden');
+        }
+
+        function editItem(id) {
+            let item = null;
+            for (let i = 0; i < foodItems.length; i++) {
+                if (foodItems[i].id === id) {
+                    item = foodItems[i];
+                    break;
+                }
+            }
+            if (item) {
+                editingId = id;
+                document.getElementById('formTitle').textContent = 'Edit Food Item';
+                document.getElementById('itemName').value = item.name;
+                document.getElementById('itemCalories').value = item.calories;
+                document.getElementById('nameError').textContent = '';
+                document.getElementById('caloriesError').textContent = '';
+                updateCharCount();
+                updatePreview();
+                document.getElementById('mainView').classList.add('hidden');
+                document.getElementById('formView').classList.remove('hidden');
+            }
+        }
+
+        function deleteItem(id) {
+            if (confirm('Are you sure you want to delete this item?')) {
+                const newItems = [];
+                for (let i = 0; i < foodItems.length; i++) {
+                    if (foodItems[i].id !== id) {
+                        newItems.push(foodItems[i]);
+                    }
+                }
+                foodItems = newItems;
+                renderFoodList();
+            }
+        }
+
+        function hideForm() {
+            document.getElementById('formView').classList.add('hidden');
+            document.getElementById('mainView').classList.remove('hidden');
+        }
+
+        function validateForm() {
+            const name = document.getElementById('itemName').value.trim();
+            const calories = parseInt(document.getElementById('itemCalories').value);
+            let valid = true;
+
+            document.getElementById('nameError').textContent = '';
+            document.getElementById('caloriesError').textContent = '';
+
+            if (!name) {
+                document.getElementById('nameError').textContent = 'Item name is required';
+                valid = false;
+            } else if (name.length > 50) {
+                document.getElementById('nameError').textContent = 'Item name must be 50 characters or less';
+                valid = false;
+            }
+
+            if (!calories || calories <= 0) {
+                document.getElementById('caloriesError').textContent = 'Calories must be a positive number';
+                valid = false;
+            }
+
+            return valid;
+        }
+
+        function saveItem() {
+            if (!validateForm()) return;
+
+            const name = document.getElementById('itemName').value.trim();
+            const calories = parseInt(document.getElementById('itemCalories').value);
+
+            if (editingId) {
+                for (let i = 0; i < foodItems.length; i++) {
+                    if (foodItems[i].id === editingId) {
+                        foodItems[i].name = name;
+                        foodItems[i].calories = calories;
+                        break;
+                    }
+                }
+            } else {
+                foodItems.push({ id: nextId, name: name, calories: calories });
+                nextId = nextId + 1;
+            }
+
+            renderFoodList();
+            hideForm();
+        }
+
+        function updateCharCount() {
+            const name = document.getElementById('itemName').value;
+            document.getElementById('charCount').textContent = name.length + '/50';
+        }
+
+        function updatePreview() {
+            const name = document.getElementById('itemName').value || 'Food Name';
+            const calories = document.getElementById('itemCalories').value || '0';
+            document.getElementById('previewName').textContent = name;
+            document.getElementById('previewCalories').textContent = calories;
+        }
+
+        function goHome() {
+            alert('Navigate back to home page');
+        }
+
+        document.getElementById('itemName').addEventListener('input', function() {
+            updateCharCount();
+            updatePreview();
+        });
+
+        document.getElementById('itemCalories').addEventListener('input', function() {
+            updatePreview();
+        });
+
+        renderFoodList();
+    </script>
+</body>
+</html>
