@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Food Item - PRO02</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 24px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+            padding: 32px 24px;
+            max-width: 400px;
+            width: 100%;
+            animation: slideIn 0.4s ease-out;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        h1 {
+            color: #1a1a1a;
+            margin-bottom: 32px;
+            font-size: 26px;
+            text-align: center;
+            font-weight: 700;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        label {
+            display: block;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 8px;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        input {
+            width: 100%;
+            padding: 14px;
+            border: 2px solid #e0e0e0;
+            border-radius: 8px;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            background: #f9f9f9;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: #11998e;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(17, 153, 142, 0.1);
+        }
+
+        input:hover {
+            border-color: #bbb;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 35px;
+        }
+
+        button {
+            flex: 1;
+            padding: 14px 24px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .btn-save {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            color: white;
+        }
+
+        .btn-save:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 24px rgba(17, 153, 142, 0.35);
+        }
+
+        .btn-save:active {
+            transform: translateY(0);
+        }
+
+        .btn-cancel {
+            background: #f5f5f5;
+            color: #666;
+        }
+
+        .btn-cancel:hover {
+            background: #e0e0e0;
+            transform: translateY(-2px);
+        }
+
+        .btn-cancel:active {
+            transform: translateY(0);
+        }
+
+        .tag {
+            display: inline-block;
+            background: #e8eaf6;
+            color: #667eea;
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            display: none;
+        }
+
+        .success-message {
+            display: none;
+            background: #4caf50;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            text-align: center;
+            animation: slideIn 0.3s ease-out;
+        }
+
+        .success-message.show {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="tag">PRO02</div>
+        <h1>Create Food Item</h1>
+        
+        <div id="successMessage" class="success-message">
+            Food item saved successfully!
+        </div>
+
+        <form id="foodItemForm">
+            <div class="form-group">
+                <label for="itemName">Item Name</label>
+                <input 
+                    type="text" 
+                    id="itemName" 
+                    name="itemName" 
+                    placeholder="Enter food item name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="calories">Calories</label>
+                <input 
+                    type="number" 
+                    id="calories" 
+                    name="calories" 
+                    placeholder="Enter calorie count"
+                    min="0"
+                    required
+                >
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="btn-save">Save</button>
+                <button type="button" class="btn-cancel" id="cancelBtn">Cancel</button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('foodItemForm');
+        const cancelBtn = document.getElementById('cancelBtn');
+        const successMessage = document.getElementById('successMessage');
+        const itemNameInput = document.getElementById('itemName');
+        const caloriesInput = document.getElementById('calories');
+
+        form.addEventListener('submit', (e) => {
+            e.preventDefault();
+            
+            const itemName = itemNameInput.value.trim();
+            const calories = caloriesInput.value;
+
+            if (itemName && calories) {
+                // Store data in memory
+                const foodItem = {
+                    name: itemName,
+                    calories: parseInt(calories),
+                    createdAt: new Date().toISOString()
+                };
+
+                console.log('Food item created:', foodItem);
+
+                // Show success message
+                successMessage.classList.add('show');
+                
+                // Reset form
+                form.reset();
+
+                // Hide success message after 3 seconds
+                setTimeout(() => {
+                    successMessage.classList.remove('show');
+                }, 3000);
+            }
+        });
+
+        // Cancel button - Action A03
+        cancelBtn.addEventListener('click', () => {
+            if (itemNameInput.value || caloriesInput.value) {
+                if (confirm('Are you sure you want to cancel? Any unsaved changes will be lost.')) {
+                    form.reset();
+                    console.log('Form cancelled - Action A03');
+                }
+            } else {
+                form.reset();
+                console.log('Form cancelled - Action A03');
+            }
+        });
+    </script>
+</body>
+</html>
