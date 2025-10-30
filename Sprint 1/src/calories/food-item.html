@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <link rel="stylesheet" href="food-list.css">
+</head>
+<body>
+    <h1 id="header"></h1>
+    <form id="food-form">
+        <input id="food-name" type="text" placeholder="Name" required>
+        <input id="food-calories" type="number" placeholder="Calories" required min="0">
+        <button type="submit">Save</button>
+        <button type="button" id=cancel-button>Cancel</button>
+    </form>
+
+    <div id="message" aria-live="polite"></div>
+    <script type="module" src="food-item.js"></script>
+</body>
+</html>
