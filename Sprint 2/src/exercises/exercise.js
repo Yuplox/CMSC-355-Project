@@ -61,7 +61,7 @@ import Exercises from "./exercise-helper.js";
             if (typeP === "add") {
                 addExercise(name, reps, weight);
             } else if (typeP === "edit") {
-                editItem(idP, name, reps, weight);
+                editExercise(idP, name, reps, weight);
             }
 			
 			form.reset();
