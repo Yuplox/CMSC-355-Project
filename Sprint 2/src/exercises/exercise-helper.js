@@ -1,6 +1,6 @@
 const Exercises = (function () {
     // Key for local storage
-    const STORAGE_KEY = "ExerciseTracker.s1";
+    const STORAGE_KEY = "ExerciseTracker.s2";
 
     class Exercise {
         constructor(name, reps, weight) {
