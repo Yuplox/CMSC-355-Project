@@ -19,7 +19,7 @@ import Exercises from "./exercise-helper.js";
 		listEl.innerHTML = "";
 
 		if (exercises.length == 0) {
-			listEl.innerHTML = "<li><em>No foods added yet.</em></li>";
+			listEl.innerHTML = "<li><em>No exercises added yet.</em></li>";
 			return;
 		}
 
