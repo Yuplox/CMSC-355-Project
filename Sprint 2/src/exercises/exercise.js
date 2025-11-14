@@ -32,19 +32,19 @@ import Exercises from "./exercise-helper.js";
 
     function addExercise(name, reps, weight) {
 		let exercise = new Exercises.Exercise(name, reps, weight);
-		items.push(exercise);
+		exercises.push(exercise);
 		Exercises.save(exercises);
 	}
 
     function editExercise(id, name, reps, weight) {
-		const idx = items.findIndex(i => i.id === id);
+		const idx = exercises.findIndex(i => i.id === id);
 		if (idx === -1) 
             return;
 
         exercises[idx].name = name;
         exercises[idx].reps = reps;
         exercises[idx].weight = weight;
-		Exercises.save(items);
+		Exercises.save(exercises);
 	}
 
     function goToList() {
