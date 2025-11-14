@@ -50,7 +50,7 @@ import Exercises from "./exercise-helper.js";
 	function removeExercise(id) {
 		const idx = exercises.findIndex(i => i.id === id);
 		if (idx === -1) {
-			console.warn("Unable to remove food exercise")
+			console.warn("Unable to remove exercise")
 			return;
 		}
 			
