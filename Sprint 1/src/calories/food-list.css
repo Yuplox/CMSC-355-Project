@@ -1,13 +1,12 @@
-/* ===== iOS-ish theme tokens ===== */
 :root {
   --bg: #f5f6f7;
   --card: #ffffff;
   --text: #0b0c0f;
   --muted: #6b7280;
   --ring: 0 0 0 3px rgba(0, 122, 255, 0.25);
-  --accent: #0a84ff;          /* iOS blue */
+  --accent: #0a84ff;         
   --accent-press: #0063cc;
-  --danger: #ff3b30;          /* iOS red */
+  --danger: #ff3b30;          
   --danger-press: #d12b22;
   --shadow: 0 8px 24px rgba(0,0,0,0.06), 0 2px 8px rgba(0,0,0,0.05);
   --radius: 14px;

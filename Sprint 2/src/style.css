@@ -60,7 +60,7 @@ li {
   padding: 14px 14px;
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap:8px;
   min-height: 52px;
   transition: transform .12s ease, box-shadow .12s ease;
 }

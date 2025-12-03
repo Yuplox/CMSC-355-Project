@@ -6,6 +6,7 @@ import Calories from "./food-helper.js";
 	const listEl = document.getElementById("food-list");
 	const addButton = document.getElementById("add-button");
 	const messageEl = document.getElementById("message");
+	const totalEl = document.getElementById("total-calories");
 
 	if (addButton) {
 		addButton.addEventListener("click", () => goToForm("add"));
@@ -20,6 +21,8 @@ import Calories from "./food-helper.js";
 
 		if (items.length == 0) {
 			listEl.innerHTML = "<li><em>No foods added yet.</em></li>";
+			// ensure total shows zero when there are no items
+			if (totalEl) totalEl.textContent = `Total calories: 0`;
 			return;
 		}
 
@@ -45,6 +48,10 @@ import Calories from "./food-helper.js";
 			li.appendChild(removeButton);
 			listEl.appendChild(li);
 		});
+
+		// compute and display total calories (guard against strings)
+		const total = items.reduce((sum, it) => sum + (Number(it.calories) || 0), 0);
+		if (totalEl) totalEl.textContent = `Total calories: ${total}`;
 	}
 
 	function removeItem(id) {
