@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Fitness Assistant</title>
+    <link rel="stylesheet" href="../style.css">
+    <link rel="stylesheet" href="ai-assistant.css">
+</head>
+<body>
+    <div class="chat-container">
+        <div class="chat-header">
+            <h1>AI Fitness Assistant</h1>
+            <p class="chat-subtitle">Get personalized diet and workout plans</p>
+        </div>
+
+        <div class="chat-messages" id="chat-messages" role="log" aria-live="polite">
+            <div class="message bot-message">
+                <div class="message-content">
+                    <p>👋 Hi! I'm your AI Fitness Assistant. I'll help you create a personalized diet and workout plan.</p>
+                    <p>Let me ask you a few questions to understand your goals and preferences:</p>
+                    <p><strong>What's your primary fitness goal?</strong></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quick-options" id="quick-options">
+            <button class="quick-option-btn" data-value="weight-loss">Lose Weight</button>
+            <button class="quick-option-btn" data-value="muscle-gain">Build Muscle</button>
+            <button class="quick-option-btn" data-value="maintain">Maintain Weight</button>
+            <button class="quick-option-btn" data-value="endurance">Improve Endurance</button>
+        </div>
+
+        <div class="chat-input-container">
+            <input 
+                type="text" 
+                id="chat-input" 
+                placeholder="Type your response or select an option above..."
+                aria-label="Chat input"
+                autocomplete="off"
+            >
+            <button id="send-button" aria-label="Send message">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+
+        <div class="plan-output" id="plan-output" style="display: none;">
+            <div class="plan-section" id="diet-plan-section">
+                <h2>🍽️ Your Personalized Diet Plan</h2>
+                <div id="diet-plan-content"></div>
+            </div>
+            <div class="plan-section" id="workout-plan-section">
+                <h2>💪 Your Personalized Workout Plan</h2>
+                <div id="workout-plan-content"></div>
+            </div>
+            <div class="plan-actions">
+                <button id="save-diet-btn" class="plan-action-btn">Save Diet Plan</button>
+                <button id="save-workout-btn" class="plan-action-btn">Save Workout Plan</button>
+                <button id="new-plan-btn" class="plan-action-btn secondary">Start New Plan</button>
+            </div>
+        </div>
+    </div>
+
+    <script type="module" src="ai-assistant.js"></script>
+</body>
+</html>
+
