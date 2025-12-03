@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head>
+    <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+    <h1 id="header"></h1>
+    <form id="exercise-form">
+        <input id="exercise-name" type="text" placeholder="Name" required>
+        <input id="exercise-reps" type="number" placeholder="Reps" required min="0">
+        <input id="exercise-weight" type="number" placeholder="Weight" required min="0">
+
+        <button type="submit">Save</button>
+        <button type="button" id=cancel-button>Cancel</button>
+    </form>
+
+    <script type="module" src="exercise.js"></script>
+</body>
+</html>
